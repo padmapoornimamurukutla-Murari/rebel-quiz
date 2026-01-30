@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rebel Tollywood Quiz - The Ultimate 100 Question Prabhas Game</title>
+    <meta name="description" content="Play the Rebel Tollywood Quiz! 100 levels of Prabhas and Telugu cinema trivia. Can you reach the Rebel Legend rank?">
+    <meta name="keywords" content="Rebel Tollywood Quiz, Prabhas Quiz, Telugu Movie Game, Rebel 100, Tollywood Trivia">
+    <style>
+        body { background-color: #aa0000; color: white; font-family: 'Arial Black', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .rebel-header { font-size: 50px; letter-spacing: 10px; border-bottom: 6px solid white; display: inline-block; margin-bottom: 10px; text-shadow: 4px 4px black; }
+        #quiz-box { background: rgba(0,0,0,0.9); width: 95%; max-width: 750px; margin: 10px auto; padding: 25px; border: 4px solid white; border-radius: 20px; box-shadow: 0 0 30px black; }
+        .question-text { font-size: 22px; margin: 20px 0; min-height: 50px; color: #fff; }
+        .option-btn { display: block; width: 100%; padding: 14px; margin: 8px 0; background: transparent; color: white; border: 2px solid white; font-size: 18px; cursor: pointer; border-radius: 10px; transition: 0.2s; }
+        .option-btn:hover { background: white; color: #aa0000; font-weight: bold; }
+        #feedback { font-size: 24px; font-weight: bold; height: 30px; margin-bottom: 10px; }
+        #score-board { font-size: 18px; color: gold; margin-top: 15px; }
+        .rank-tag { font-size: 20px; color: #00ff00; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="rebel-header">REBEL 100</div>
+
+    <div id="quiz-box">
+        <div id="level-display" style="color:gold; font-size: 22px;">LEVEL 1</div>
+        <div id="rank-display" class="rank-tag">Rank: Fan</div>
+        <div id="q-text" class="question-text">Are you a true Rebel, Darling? Let's find out.</div>
+        <div id="feedback"></div>
+        <div id="options-container">
+            <button class="option-btn" style="background:white; color:#aa0000;" onclick="startQuiz()">START 100 QUESTIONS</button>
+        </div>
+        <div id="score-board">Total Score: 0</div>
+    </div>
+
+    <script>
+        const quizData = [
+            { q: "Who is the lead actor of 'Rebel'?", a: ["Prabhas", "NTR", "Ram Charan"], c: "Prabhas" },
+            { q: "Director of 'Chatrapathi'?", a: ["Rajamouli", "Sukumar", "Boyapati"], c: "Rajamouli" },
+            { q: "Prabhas's character in 'Mirchi'?", a: ["Jai", "Siva", "Billa"], c: "Jai" },
+            { q: "Movie with 'Naatu Naatu' song?", a: ["RRR", "Pushpa", "Baahubali"], c: "RRR" },
+            { q: "Who is the 'Icon Star'?", a: ["Allu Arjun", "Pawan Kalyan", "Nani"], c: "Allu Arjun" },
+            { q: "Director of 'Kalki 2898 AD'?", a: ["Nag Ashwin", "Rajamouli", "Sandeep Vanga"], c: "Nag Ashwin" },
+            { q: "Nickname of Mahesh Babu?", a: ["Prince", "Mega Star", "Rebel Star"], c: "Prince" },
+            { q: "Actress in 'Sita Ramam'?", a: ["Mrunal Thakur", "Rashmika", "Pooja"], c: "Mrunal Thakur" },
+            { q: "Character 'Pushpa Raj' is played by?", a: ["Allu Arjun", "Fahadh Faasil", "Ram Charan"], c: "Allu Arjun" },
+            { q: "Power Star of Tollywood?", a: ["Pawan Kalyan", "NTR", "Prabhas"], c: "Pawan Kalyan" },
+            { q: "Prabhas's debut movie?", a: ["Eeswar", "Varsham", "Raghavendra"], c: "Eeswar" },
+            { q: "Who played Bhallaladeva?", a: ["Rana Daggubati", "Prabhas", "Sudeep"], c: "Rana Daggubati" },
+            { q: "Director of 'Pushpa'?", a: ["Sukumar", "Rajamouli", "Trivikram"], c: "Sukumar" },
+            { q: "Music director of 'Pushpa'?", a: ["Devi Sri Prasad", "Thaman", "Anirudh"], c: "Devi Sri Prasad" },
+            { q: "Natural Star of Tollywood?", a: ["Nani", "Nithiin", "Chay"], c: "Nani" },
+            { q: "Who directed 'Arjun Reddy'?", a: ["Sandeep Vanga", "Sukumar", "Nag Ashwin"], c: "Sandeep Vanga" },
+            { q: "Prabhas's character in 'Saaho'?", a: ["Ashok", "Siddhant", "Devaraj"], c: "Ashok" },
+            { q: "Lead actor in 'Dasara'?", a: ["Nani", "Vijay Deverakonda", "Ram"], c: "Nani" },
+            { q: "Puri Jagannadh directed which hit?", a: ["Pokiri", "Athadu", "Okkadu"], c: "Pokiri" },
+            { q: "Music director for 'Kalki'?", a: ["Santhosh Narayanan", "Thaman", "Anirudh"], c: "Santhosh Narayanan" },
+            { q: "Chiranjeevi's 150th film?", a: ["Khaidi No. 150", "Syeraa", "Acharya"], c: "Khaidi No. 150" },
+            { q: "Who is 'Mass Maharaja'?", a: ["Ravi Teja", "Balakrishna", "Chiranjeevi"], c: "Ravi Teja" },
+            { q: "Lead actor in 'Major'?", a: ["Adivi Sesh", "Nani", "Sharwanand"], c: "Adivi Sesh" },
+            { q: "Director of 'Salaar'?", a: ["Prashanth Neel", "Rajamouli", "Lokesh"], c: "Prashanth Neel" },
+            { q: "Ram Charan's debut movie?", a: ["Chirutha", "Magadheera", "Racha"], c: "Chirutha" },
+            { q: "Who directed 'Janatha Garage'?", a: ["Koratala Siva", "Boyapati", "Sukumar"], c: "Koratala Siva" },
+            { q: "Actress who played Devasena?", a: ["Anushka Shetty", "Tamannaah", "Kajal"], c: "Anushka Shetty" },
+            { q: "Song 'Samajavaragamana' is from?", a: ["Ala Vaikunthapurramuloo", "Pushpa", "RRR"], c: "Ala Vaikunthapurramuloo" },
+            { q: "Who directed 'Gabbar Singh'?", a: ["Harish Shankar", "Trivikram", "Vinayak"], c: "Harish Shankar" },
+            { q: "Prabhas character in 'Baahubali'?", a: ["Amarendra", "Bhallala", "Kattappa"], c: "Amarendra" },
+            { q: "Pawan Kalyan's debut?", a: ["Akkada Ammayi", "Suswagatham", "Kushi"], c: "Akkada Ammayi" },
+            { q: "Who directed 'Eega'?", a: ["Rajamouli", "Sukumar", "Vinayak"], c: "Rajamouli" },
+            { q: "Victory Venkatesh movie?", a: ["Drushyam", "Mirchi", "Billa"], c: "Drushyam" },
+            { q: "Who directed 'Athadu'?", a: ["Trivikram", "Puri", "Sukumar"], c: "Trivikram" },
+            { q: "Character 'DJ Tillu' played by?", a: ["Siddhu Jonnalagadda", "Vishwak Sen", "Nani"], c: "Siddhu Jonnalagadda" },
+            { q: "Man of Masses?", a: ["Jr. NTR", "Ram Charan", "Prabhas"], c: "Jr. NTR" },
+            { q: "Mahesh Babu debut film?", a: ["Rajakumarudu", "Murari", "Okkadu"], c: "Rajakumarudu" },
+            { q: "Director of 'Sarkaru Vaari Paata'?", a: ["Parasuram", "Vamshi", "Sukumar"], c: "Parasuram" },
+            { q: "Prince of Tollywood?", a: ["Mahesh Babu", "Ram", "Naga Chaitanya"], c: "Mahesh Babu" },
+            { q: "Who directed 'Attarintiki Daredi'?", a: ["Trivikram", "Koratala Siva", "Boyapati"], c: "Trivikram" },
+            { q: "Actress in 'Magadheera'?", a: ["Kajal Aggarwal", "Tamannaah", "Anushka"], c: "Kajal Aggarwal" },
+            { q: "Song 'Butta Bomma' is from?", a: ["Ala Vaikunthapurramuloo", "Sarrainodu", "DJ"], c: "Ala Vaikunthapurramuloo" },
+            { q: "Director of 'Oopiri'?", a: ["Vamshi Paidipally", "Koratala", "Sukumar"], c: "Vamshi Paidipally" },
+            { q: "Lead actor in 'Virupaksha'?", a: ["Sai Dharam Tej", "Vaishnav Tej", "Ram"], c: "Sai Dharam Tej" },
+            { q: "Music of 'Ala Vaikunthapurramuloo'?", a: ["Thaman", "DSP", "Anirudh"], c: "Thaman" },
+            { q: "Who is 'Arundhati'?", a: ["Anushka Shetty", "Nayanthara", "Trisha"], c: "Anushka Shetty" },
+            { q: "Director of 'Jersey'?", a: ["Gowtam Tinnanuri", "Sandeep Vanga", "Nag Ashwin"], c: "Gowtam Tinnanuri" },
+            { q: "Lead in 'Karthikeya 2'?", a: ["Nikhil Siddhartha", "Nithiin", "Nani"], c: "Nikhil Siddhartha" },
+            { q: "Lead in 'Goodachari'?", a: ["Adivi Sesh", "Naveen Polishetty", "Nani"], c: "Adivi Sesh" },
+            { q: "Director of 'Bommarillu'?", a: ["Bhaskar", "Sekhar Kammula", "Vikram Kumar"], c: "Bhaskar" },
+            { q: "Supreme Hero?", a: ["Sai Dharam Tej", "Ram Charan", "Allu Arjun"], c: "Sai Dharam Tej" },
+            { q: "Who is the 'King'?", a: ["Nagarjuna", "Venkatesh", "Chiranjeevi"], c: "Nagarjuna" },
+            { q: "Energetic Star?", a: ["Ram Pothineni", "Nithiin", "Vishwak Sen"], c: "Ram Pothineni" },
+            { q: "Director of 'Rangasthalam'?", a: ["Sukumar", "Koratala", "Rajamouli"], c: "Sukumar" },
+            { q: "Lead in 'Hi Nanna'?", a: ["Nani", "Dulquer", "Naga Chaitanya"], c: "Nani" },
+            { q: "Director of 'Sita Ramam'?", a: ["Hanu Raghavapudi", "Nag Ashwin", "Trivikram"], c: "Hanu Raghavapudi" },
+            { q: "Star Boy?", a: ["Siddhu Jonnalagadda", "Vishwak Sen", "Naveen"], c: "Siddhu Jonnalagadda" },
+            { q: "Lead in 'F2'?", a: ["Venkatesh & Varun Tej", "Nani", "Nagarjuna"], c: "Venkatesh & Varun Tej" },
+            { q: "Director of 'Geetha Govindam'?", a: ["Parasuram", "Maruthi", "Vamshi"], c: "Parasuram" },
+            { q: "Lead in 'Bimbisara'?", a: ["Kalyan Ram", "Jr. NTR", "Prabhas"], c: "Kalyan Ram" },
+            { q: "Director of 'Akhanda'?", a: ["Boyapati Srinu", "Vinayak", "Gopichand"], c: "Boyapati Srinu" },
+            { q: "Hit 'Hit' series lead?", a: ["Vishwak Sen / Adivi Sesh", "Nani", "Satyadev"], c: "Vishwak Sen / Adivi Sesh" },
+            { q: "Actress in 'Ye Maaya Chesave'?", a: ["Samantha", "Trisha", "Nayanthara"], c: "Samantha" },
+            { q: "Director of 'Kushi' (2001)?", a: ["S.J. Surya", "Trivikram", "Puri"], c: "S.J. Surya" },
+            { q: "Blind hero movie?", a: ["Raja The Great", "Bengal Tiger", "Kick"], c: "Raja The Great" },
+            { q: "Director of 'Vikramarkudu'?", a: ["Rajamouli", "Sukumar", "Vinayak"], c: "Rajamouli" },
+            { q: "Actress in 'Happy Days'?", a: ["Tamannaah", "Kajal", "Samantha"], c: "Tamannaah" },
+            { q: "Mass Ka Das?", a: ["Vishwak Sen", "Siddhu", "Vijay"], c: "Vishwak Sen" },
+            { q: "Director of 'Okkadu'?", a: ["Gunasekhar", "Trivikram", "Puri"], c: "Gunasekhar" },
+            { q: "Music of 'Billa'?", a: ["Mani Sharma", "Thaman", "DSP"], c: "Mani Sharma" },
+            { q: "Director of 'Dookudu'?", a: ["Srinu Vaitla", "Puri", "Trivikram"], c: "Srinu Vaitla" },
+            { q: "Lead in 'Guntur Kaaram'?", a: ["Mahesh Babu", "Pawan Kalyan", "Prabhas"], c: "Mahesh Babu" },
+            { q: "First Telugu Oscar winner?", a: ["MM Keeravani", "Thaman", "DSP"], c: "MM Keeravani" },
+            { q: "Lead in 'Arjun Reddy'?", a: ["Vijay Deverakonda", "Nani", "Nithiin"], c: "Vijay Deverakonda" },
+            { q: "Director of 'Sye'?", a: ["Rajamouli", "Boyapati", "Puri"], c: "Rajamouli" },
+            { q: "Nandamuri Balakrishna hit?", a: ["Legend", "Mirchi", "Billa"], c: "Legend" },
+            { q: "Character 'Chitti Babu'?", a: ["Ram Charan", "NTR", "Prabhas"], c: "Ram Charan" },
+            { q: "Director of 'Brindavanam'?", a: ["Vamshi Paidipally", "Koratala", "Sukumar"], c: "Vamshi Paidipally" },
+            { q: "Lead in 'Nannaku Prematho'?", a: ["Jr. NTR", "Ram Charan", "Allu Arjun"], c: "Jr. NTR" },
+            { q: "Actress in 'Bharat Ane Nenu'?", a: ["Kiara Advani", "Pooja", "Kajal"], c: "Kiara Advani" },
+            { q: "Director of 'Leader'?", a: ["Sekhar Kammula", "Nag Ashwin", "Trivikram"], c: "Sekhar Kammula" },
+            { q: "Rana's debut film?", a: ["Leader", "Baahubali", "Ghazi"], c: "Leader" },
+            { q: "Director of 'Mirapakay'?", a: ["Harish Shankar", "Puri", "Sreenu Vaitla"], c: "Harish Shankar" },
+            { q: "Prabhas sister in 'Varsham'?", a: ["Trisha", "Shraddha", "None"], c: "None" },
+            { q: "Director of 'Business Man'?", a: ["Puri Jagannadh", "Rajamouli", "Trivikram"], c: "Puri Jagannadh" },
+            { q: "Character 'Gautham Nanda'?", a: ["Pawan Kalyan", "Mahesh", "Ram Charan"], c: "Pawan Kalyan" },
+            { q: "Lead in 'Karthikeya'?", a: ["Nikhil", "Nani", "Nithiin"], c: "Nikhil" },
+            { q: "Director of 'Aarya'?", a: ["Sukumar", "Vinayak", "Boyapati"], c: "Sukumar" },
+            { q: "Allu Arjun's first movie?", a: ["Gangotri", "Arya", "Bunny"], c: "Gangotri" },
+            { q: "Director of 'Simhadri'?", a: ["Rajamouli", "Puri", "Vinayak"], c: "Rajamouli" },
+            { q: "Prabhas's 'Darling' director?", a: ["A. Karunakaran", "Rajamouli", "Sukumar"], c: "A. Karunakaran" },
+            { q: "Lead in 'Ishq'?", a: ["Nithiin", "Nani", "Ram"], c: "Nithiin" },
+            { q: "Director of 'Khaidi'?", a: ["Lokesh Kanagaraj", "Atlee", "Nelson"], c: "Lokesh Kanagaraj" },
+            { q: "Prabhas role in 'Kalki'?", a: ["Bhairava", "Ashok", "Kalki"], c: "Bhairava" },
+            { q: "Who directed 'Varsham'?", a: ["Sobhan", "Rajamouli", "Puri"], c: "Sobhan" },
+            { q: "Actress in 'Billa'?", a: ["Anushka & Namitha", "Kajal", "Samantha"], c: "Anushka & Namitha" },
+            { q: "NTR's character in 'RRR'?", a: ["Bheem", "Ram", "Siva"], c: "Bheem" },
+            { q: "Director of 'Eswar'?", a: ["Jayanth C. Paranjee", "Rajamouli", "Puri"], c: "Jayanth C. Paranjee" },
+            { q: "Prabhas character in 'Salaar'?", a: ["Deva", "Vardha", "Billa"], c: "Deva" },
+            { q: "Ultimate Rank?", a: ["Rebel Legend", "Fan", "Noob"], c: "Rebel Legend" }
+        ];
+
+        let currentQ = 0, score = 0, level = 1;
+        const ranks = ["Fan", "Junior Artist", "Side Actor", "Comedian", "Villain", "Hero", "Super Star", "Mega Star", "Global Star", "REBEL LEGEND"];
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            msg.voice = voices.find(v => v.name.includes('India') || v.name.includes('Male')) || voices[0];
+            msg.pitch = 0.75;
+            msg.rate = 0.9;
+            window.speechSynthesis.speak(msg);
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function startQuiz() {
+            currentQ = 0; score = 0; level = 1;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const container = document.getElementById("options-container");
+            const feedbackDiv = document.getElementById("feedback");
+            feedbackDiv.innerText = "";
+
+            if (currentQ > 0 && currentQ % 10 === 0 && (currentQ / 10) === level) {
+                levelUp();
+                return;
+            }
+
+            if (currentQ < quizData.length) {
+                const data = quizData[currentQ];
+                document.getElementById("level-display").innerText = "LEVEL " + level;
+                document.getElementById("rank-display").innerText = "Rank: " + ranks[level-1];
+                document.getElementById("q-text").innerText = (currentQ + 1) + ". " + data.q;
+                
+                speak(data.q);
+
+                let shuffledOptions = shuffle([...data.a]);
+                container.innerHTML = "";
+                shuffledOptions.forEach(opt => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerText = opt;
+                    btn.onclick = () => checkAnswer(opt, data.c);
+                    container.appendChild(btn);
+                });
+            } else {
+                showEnd();
+            }
+        }
+
+        function checkAnswer(selected, correct) {
+            const feedbackDiv = document.getElementById("feedback");
+            if (selected === correct) {
+                score++;
+                feedbackDiv.style.color = "#00ff00";
+                feedbackDiv.innerText = "Jai Maahishmathi!";
+                speak("Correct! Jai Maahishmathi!");
+            } else {
+                feedbackDiv.style.color = "#ffff00";
+                feedbackDiv.innerText = "Don't worry, Darling...";
+                speak("Wrong! Don't worry, Darling.");
+            }
+            currentQ++;
+            document.getElementById("score-board").innerText = "Total Score: " + score;
+            setTimeout(loadQuestion, 2000);
+        }
+
+        function levelUp() {
+            level++;
+            speak("Level up! You are now a " + ranks[level-1]);
+            document.getElementById("options-container").innerHTML = `
+                <h2 style="color:gold;">LEVEL COMPLETED!</h2>
+                <p>New Rank: ${ranks[level-1]}</p>
+                <button class="option-btn" style="background:white; color:#aa0000" onclick="loadQuestion()">CONTINUE HUNT</button>
+            `;
+        }
+
+        function showEnd() {
+            speak("Mission complete. You are a true Rebel Legend. Stay happy, Darling.");
+            document.getElementById("quiz-box").innerHTML = `
+                <h1>MISSION COMPLETE</h1>
+                <h2>Final Rank: ${ranks[9]}</h2>
+                <p style="font-size:24px;">Score: ${score}/100</p>
+                <button class="option-btn" style="background:white; color:#aa0000" onclick="location.reload()">REPLAY</button>
+            `;
+        }
+
+        window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+    </script>
+</body>
+</html>
